@@ -937,7 +937,7 @@ class Suggestion:
                     return
 
                 thread = message.thread
-        except disnake.NotFound:
+        except (disnake.NotFound, ConfiguredChannelNoLongerExists):
             # While not ideal, we ignore the error here as
             # failing to archive a thread isn't a critical issue
             # worth crashing on. Instead, pass this to the actual
