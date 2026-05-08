@@ -169,9 +169,22 @@ class SuggestionsQueue:
                         icon_url=icon_url,
                     )
                     embed.set_footer(text=f"Guild ID {guild_id}")
-                    await user.send(
-                        embeds=[embed, await queued_suggestion.as_embed(self.bot)]
-                    )
+                    try:
+                        await user.send(
+                            embeds=[embed, await queued_suggestion.as_embed(self.bot)]
+                        )
+                    except disnake.Forbidden:
+                        # We can't dm the user, this is fine
+                        log.debug(
+                            "Failed to DM %s regarding their rejected queue suggestion",
+                            suggestion.suggestion_author_id,
+                            extra={
+                                "suggestion.id": suggestion.suggestion_id,
+                                "interaction.guild.id": suggestion.guild_id,
+                                "interaction.author.id": ih.interaction.author.id,
+                                "interaction.author.global_name": ih.interaction.author.global_name,
+                            },
+                        )
         except:
             # Don't remove from queue on failure
             if suggestion is not None:
