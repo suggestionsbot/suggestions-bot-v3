@@ -177,10 +177,10 @@ class SuggestionsQueue:
                         # We can't dm the user, this is fine
                         log.debug(
                             "Failed to DM %s regarding their rejected queue suggestion",
-                            suggestion.suggestion_author_id,
+                            queued_suggestion.suggestion_author_id,
                             extra={
-                                "suggestion.id": suggestion.suggestion_id,
-                                "interaction.guild.id": suggestion.guild_id,
+                                "suggestion.id": queued_suggestion._id,
+                                "interaction.guild.id": queued_suggestion.guild_id,
                                 "interaction.author.id": ih.interaction.author.id,
                                 "interaction.author.global_name": ih.interaction.author.global_name,
                             },
