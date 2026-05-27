@@ -870,15 +870,16 @@ class Suggestion:
         else:
             # Move the suggestion to the logs channel
             await self.save_reaction_results(bot, interaction)
-            channel = await bot.get_or_fetch_channel(guild_config.log_channel_id)
             try:
+                channel = await bot.get_or_fetch_channel(guild_config.log_channel_id)
                 message: disnake.Message = await channel.send(
                     embed=await self.as_embed(bot)
                 )
-            except disnake.Forbidden:
+            except (disnake.Forbidden, ConfiguredChannelNoLongerExists):
                 raise commands.MissingPermissions(
                     missing_permissions=[
-                        "Missing permissions to send in configured log channel"
+                        "Missing permissions to send in configured log channel. "
+                        "Please fix permissions or set a new log channel."
                     ]
                 )
 
